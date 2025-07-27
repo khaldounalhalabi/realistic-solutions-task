@@ -1,5 +1,5 @@
+import XMark from "@/Components/Icons/XMark";
 import React, { HTMLProps, useState } from "react";
-import XMark from "@/Components/icons/XMark";
 
 interface ImgProps
     extends Omit<HTMLProps<HTMLImageElement>, "className" | "alt"> {

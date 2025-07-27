@@ -1,81 +1,109 @@
-import { FormEvent } from "react";
+import Input from "@/Components/Form/Fields/Input";
+import ArrowDownTray from "@/Components/Icons/ArrowDownTray";
+import LoadingSpinner from "@/Components/Icons/LoadingSpinner";
 import Modal from "@/Components/ui/Modal";
-import Input from "@/Components/form/fields/Input";
+import { Button } from "@/Components/ui/shadcn/button";
+import DownloadFile from "@/Hooks/use-download";
 import { useForm } from "@inertiajs/react";
-import Button from "@/Components/ui/Button";
-import DownloadFile from "@/Hooks/DownloadFile";
+import { FormEvent, useState } from "react";
 
 const ImportModal = ({
-  openImport,
-  setOpenImport,
-  revalidate,
-  importRoute,
-  importExampleRoute,
+    revalidate,
+    importRoute,
+    importExampleRoute,
 }: {
-  openImport: boolean;
-  setOpenImport: (value: boolean | ((prev: boolean) => boolean)) => void;
-  revalidate: () => void;
-  importRoute: string;
-  importExampleRoute?: string;
+    revalidate: () => void;
+    importRoute: string;
+    importExampleRoute?: string;
 }) => {
-  const { post, setData, errors, processing } = useForm<{
-    excel_file?: File;
-  }>();
+    const [openImport, setOpenImport] = useState(false);
 
-  const { isLoading, downloadFile } = DownloadFile();
+    const { post, setData, processing } = useForm<{
+        excel_file?: File;
+    }>();
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    post(importRoute, {
-      onSuccess: () => {
-        if (!processing && !isLoading) {
-          revalidate();
-          setOpenImport(false);
-          setData("excel_file", undefined);
-        }
-      },
-    });
-  };
-  return (
-    <Modal
-      isOpen={openImport}
-      onClose={() => {
-        if (!isLoading && !processing) {
-          setOpenImport(false);
-        }
-      }}
-    >
-      <form onSubmit={onSubmit}>
-        <label className={"dark:text-white"}>
-          Excel File
-          <Input
-            name={"excel_file"}
-            type="file"
-            onChange={(e) => {
-              setData("excel_file", e.target.files?.[0]);
+    const { isLoading, downloadFile } = DownloadFile();
+
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        post(importRoute, {
+            onSuccess: () => {
+                if (!processing && !isLoading) {
+                    revalidate();
+                    setOpenImport(false);
+                    setData("excel_file", undefined);
+                }
+            },
+        });
+    };
+    return (
+        <Modal
+            isOpen={openImport}
+            trigger={
+                <Button
+                    type={"button"}
+                    size={"icon"}
+                    variant={"success"}
+                    onClick={() => {
+                        setOpenImport(true);
+                    }}
+                >
+                    <ArrowDownTray />
+                </Button>
+            }
+            onClose={() => {
+                setOpenImport(false);
             }}
-          />
-        </label>
-        <div className="my-5 flex items-center gap-2">
-          <Button type="submit" disabled={processing}>
-            Import
-          </Button>
-          {importExampleRoute && (
-            <Button
-              color="secondary"
-              type="button"
-              onClick={() => {
-                downloadFile(() => fetch(importExampleRoute));
-              }}
-              disabled={isLoading}
-            >
-              Get Import Example
-            </Button>
-          )}
-        </div>
-      </form>
-    </Modal>
-  );
+            footer={
+                <div className="flex items-center gap-2">
+                    <Button
+                        type={"button"}
+                        variant={"destructive"}
+                        onClick={() => {
+                            setOpenImport(false);
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" disabled={processing}>
+                        Import
+                        {processing && <LoadingSpinner />}
+                    </Button>
+                    {importExampleRoute && (
+                        <Button
+                            variant={"secondary"}
+                            type="button"
+                            onClick={() => {
+                                downloadFile(() =>
+                                    fetch(importExampleRoute),
+                                ).then(() => {
+                                    setOpenImport(false);
+                                });
+                            }}
+                            disabled={isLoading}
+                        >
+                            Get import example
+                            {isLoading && <LoadingSpinner />}
+                        </Button>
+                    )}
+                </div>
+            }
+            title={"Import from excel file"}
+        >
+            <form onSubmit={onSubmit}>
+                <label className={"dark:text-white"}>
+                    Excel file
+                    <Input
+                        name={"excel_file"}
+                        type="file"
+                        onChange={(e) => {
+                            setData("excel_file", e.target.files?.[0]);
+                        }}
+                    />
+                </label>
+            </form>
+        </Modal>
+    );
 };
 
 export default ImportModal;

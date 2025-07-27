@@ -1,0 +1,38 @@
+import { Textarea } from "@/Components/ui/shadcn/textarea";
+import { usePage } from "@inertiajs/react";
+import React, { HTMLProps } from "react";
+
+export interface TextEditorProps extends HTMLProps<HTMLTextAreaElement> {
+    name: string;
+    label?: string;
+    className?: string;
+    required?: boolean;
+}
+
+const TextEditor: React.FC<TextEditorProps> = ({
+    name,
+    label,
+    className,
+    required = false,
+    ...props
+}) => {
+    const errors = usePage().props.errors;
+    const error = name && errors[name] ? errors[name] : undefined;
+
+    return (
+        <div className={className ?? ""}>
+            <label className={"dark:text-white"}>
+                {label}
+                {required ? (
+                    <span className="text-sm text-red-500">*</span>
+                ) : (
+                    ""
+                )}
+                <Textarea rows={4} name={name ?? ""} {...props} />
+            </label>
+            {error ? <p className={"text-sm text-destructive"}>{error}</p> : ""}
+        </div>
+    );
+};
+
+export default TextEditor;
