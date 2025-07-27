@@ -6,9 +6,7 @@ const Gallery = ({
     sources: (string | undefined)[] | undefined;
 }) => {
     return (
-        <div
-            className={`dark:bg-dark grid w-full grid-cols-4 gap-5 dark:text-white`}
-        >
+        <div className={`grid grid-cols-1 md:grid-cols-4 w-full gap-5`}>
             {sources?.map(
                 (img: string | undefined, index) =>
                     img && (

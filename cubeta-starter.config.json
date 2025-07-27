@@ -2,5 +2,46 @@
     "installed_web": true,
     "frontend_type": "React & Typescript",
     "installed_web_packages": true,
-    "installed_web_auth": true
+    "installed_web_auth": true,
+    "tables": [
+        {
+            "model_name": "Event",
+            "table_name": "events",
+            "attributes": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "nullable": false,
+                    "unique": false
+                },
+                {
+                    "name": "start_time",
+                    "type": "dateTime",
+                    "nullable": false,
+                    "unique": false
+                },
+                {
+                    "name": "end_time",
+                    "type": "dateTime",
+                    "nullable": false,
+                    "unique": false
+                },
+                {
+                    "name": "description",
+                    "type": "text",
+                    "nullable": false,
+                    "unique": false
+                }
+            ],
+            "relations": {
+                "hasMany": [
+                    {
+                        "type": "hasMany",
+                        "model_name": "Attendee"
+                    }
+                ]
+            },
+            "version": "v1"
+        }
+    ]
 }

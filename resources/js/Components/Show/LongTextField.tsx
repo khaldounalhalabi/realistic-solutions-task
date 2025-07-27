@@ -1,21 +1,26 @@
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/Components/ui/shadcn/card";
+
 const LongTextField = ({
     label,
     value,
+    className,
 }: {
     label?: string;
     value?: string;
+    className?: string;
 }) => {
     return (
-        <div className="dark:bg-dark mb-5 w-full rounded-md bg-gray-50 p-4 text-xl font-bold dark:text-white">
-            <label className="text-lg font-semibold">{label} :</label>
-            <div className="outlin w-full rounded-md border-0 p-4 outline-0">
-                <div
-                    dangerouslySetInnerHTML={{
-                        __html: value ?? "",
-                    }}
-                />
-            </div>
-        </div>
+        <Card className={className ?? "my-2"}>
+            <CardHeader>
+                <CardTitle>{label}</CardTitle>
+            </CardHeader>
+            <CardContent>{value}</CardContent>
+        </Card>
     );
 };
 

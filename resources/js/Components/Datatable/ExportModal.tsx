@@ -2,6 +2,7 @@ import { DataTableSchema } from "@/Components/Datatable/DataTableUtils";
 import LoadingSpinner from "@/Components/Icons/LoadingSpinner";
 import Modal from "@/Components/ui/Modal";
 import { Button } from "@/Components/ui/shadcn/button";
+import { STR } from "@/helper";
 import useDownload from "@/Hooks/use-download";
 import Http from "@/Modules/Http/Http";
 import { IconFileExcel } from "@tabler/icons-react";
@@ -67,7 +68,7 @@ const ExportModal = ({
                                   className="flex items-center justify-between gap-2 dark:text-white"
                                   key={index}
                               >
-                                  {exp}
+                                  {STR.title(exp)}
                                   <input
                                       type="checkbox"
                                       className="accent-primary rounded-md"

@@ -1,7 +1,5 @@
 import { MiddlewareProps } from "@/Types";
 import { usePage } from "@inertiajs/react";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 export const asset = (path: string) => {
     if (path.startsWith("/")) {
@@ -24,9 +22,11 @@ export function getNestedPropertyValue(object: any, path: string): any {
     return value;
 }
 
-export const swal = withReactContent(Swal);
-
-export const getLocale = (): string => {
-    const { currentLocale } = usePage<MiddlewareProps>().props;
-    return currentLocale ?? "en";
+export const STR = {
+    title: (str?: string) =>
+        (str ?? "")
+            .split(/([-_\s*])/g)
+            .filter((s) => s.trim() != "-" && s.trim() != "_")
+            .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+            .join(" "),
 };

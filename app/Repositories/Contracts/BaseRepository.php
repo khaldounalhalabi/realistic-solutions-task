@@ -41,15 +41,15 @@ abstract class BaseRepository
         $this->tableName = $this->model->getTable();
 
         if (method_exists($this->model, 'searchableArray')) {
-            $this->searchableKeys = $this->model->searchableArray();
+            $this->searchableKeys = $this->model::searchableArray();
         }
 
         if (method_exists($this->model, 'relationsSearchableArray')) {
-            $this->relationSearchableKeys = $this->model->relationsSearchableArray();
+            $this->relationSearchableKeys = $this->modelClass::relationsSearchableArray();
         }
 
         if (method_exists($this->model, 'filterArray')) {
-            $this->filterKeys = $this->model->filterArray();
+            $this->filterKeys = $this->modelClass::filterArray();
         }
 
         $this->modelTableColumns = $this->getTableColumns();
@@ -59,7 +59,7 @@ abstract class BaseRepository
     {
         if (is_null(self::$instance)) {
             self::$instance = new static;
-        } elseif (! (self::$instance instanceof static)) {
+        } elseif (!(self::$instance instanceof static)) {
             self::$instance = new static;
         }
 
@@ -129,7 +129,6 @@ abstract class BaseRepository
 
     /**
      * this function implement already defined filters in the model
-     *
      * @return Builder|MODEL
      */
     private function filterFields(Builder $query): Builder
@@ -147,7 +146,7 @@ abstract class BaseRepository
                 $value = array_values($value);
             }
 
-            if (! $value) {
+            if (!$value) {
                 continue;
             }
 
@@ -165,7 +164,7 @@ abstract class BaseRepository
                         return $this->handleRangeQuery($value, $q, $relTable, $col);
                     }
                     if ($operator === 'like') {
-                        return $q->{$method}("$relTable.$col", $operator, '%'.$value.'%');
+                        return $q->{$method}("$relTable.$col", $operator, '%' . $value . '%');
                     }
 
                     return $q->{$method}("$relTable.$col", $operator, $value);
@@ -174,9 +173,9 @@ abstract class BaseRepository
                 if ($range) {
                     $query = $this->handleRangeQuery($value, $query, $this->tableName, $field);
                 } elseif ($operator == 'like') {
-                    $query = $query->{$method}($this->tableName.'.'.$field, $operator, '%'.$value.'%');
+                    $query = $query->{$method}($this->tableName . '.' . $field, $operator, '%' . $value . '%');
                 } else {
-                    $query = $query->{$method}($this->tableName.'.'.$field, $operator, $value);
+                    $query = $query->{$method}($this->tableName . '.' . $field, $operator, $value);
                 }
             }
         }
@@ -210,11 +209,11 @@ abstract class BaseRepository
     /**
      * @return LengthAwarePaginator<int, MODEL>
      */
-    public function allWithPagination(array $relationships = [], int $per_page = 10): LengthAwarePaginator
+    public function allWithPagination(array $relationships = [], int $perPage = 10): LengthAwarePaginator
     {
-        $per_page = request('limit') ?? $per_page;
+        $perPage = request()->integer('limit') ?? $perPage;
 
-        return $this->globalQuery($relationships)->paginate($per_page);
+        return $this->globalQuery($relationships)->paginate($perPage);
     }
 
     public function create(array $data, array $relationships = []): Model
@@ -248,7 +247,7 @@ abstract class BaseRepository
     }
 
     /**
-     * @param  string|int|Model|MODEL  $id
+     * @param string|int|Model|MODEL $id
      * @return MODEL|null|Model
      */
     public function update(array $data, string|int|Model $id, array $relationships = []): ?Model
@@ -259,7 +258,7 @@ abstract class BaseRepository
             $item = $this->modelClass::find($id);
         }
 
-        if (! $item) {
+        if (!$item) {
             return null;
         }
 
@@ -269,15 +268,15 @@ abstract class BaseRepository
     }
 
     /**
-     * @param  mixed  $value
+     * @param mixed $value
      * @return Builder|MODEL
      */
     private function handleRangeQuery(array $value, Builder $query, string $table, string $column): Builder
     {
         if (count($value) == 2) {
-            if (! isset($value[0]) && isset($value[1])) {
+            if (!isset($value[0]) && isset($value[1])) {
                 $query = $query->where("$table.$column", '<=', $value[1]);
-            } elseif (isset($value[0]) && ! isset($value[1])) {
+            } elseif (isset($value[0]) && !isset($value[1])) {
                 $query->where("$table.$column", '>=', $value[0]);
             } elseif (isset($value[0]) && isset($value[1])) {
                 $query = $query->where("$table.$column", '>=', $value[0])
@@ -295,7 +294,7 @@ abstract class BaseRepository
      */
     public function export(array $ids = []): BinaryFileResponse
     {
-        if (! count($ids)) {
+        if (!count($ids)) {
             $collection = $this->globalQuery()->get();
         } else {
             $collection = $this->globalQuery()->whereIn('id', $ids)->get();
@@ -305,7 +304,7 @@ abstract class BaseRepository
 
         return Excel::download(
             new BaseExporter($collection, $this->model, $requestedColumns),
-            $this->model->getTable().'.xlsx',
+            $this->model->getTable() . '.xlsx',
         );
     }
 
@@ -317,7 +316,7 @@ abstract class BaseRepository
     {
         return Excel::download(
             new BaseExporter(collect(), $this->model, null, true),
-            $this->model->getTable().'-example.xlsx'
+            $this->model->getTable() . '-example.xlsx'
         );
     }
 
@@ -328,7 +327,7 @@ abstract class BaseRepository
 
     protected function unsetEmptyParams(string|array|null $param = null): string|array|null
     {
-        if (! $param) {
+        if (!$param) {
             return null;
         }
         if (is_array($param)) {
