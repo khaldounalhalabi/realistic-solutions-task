@@ -23,7 +23,7 @@ export interface SidebarItem {
 
 const sidebarItems = [
     {
-        href: route("v1.web.public.index"),
+        href: route("v1.web.protected.index"),
         title: "Dashboard",
         icon: () => <PresentationChart />,
     },
@@ -41,7 +41,7 @@ export const Sidebar = ({
                             asChild
                             className="data-[slot=sidebar-menu-button]:!p-1.5"
                         >
-                            <Link href={route("v1.web.public.index")}>
+                            <Link href={route("v1.web.protected.index")}>
                                 <IconInnerShadowTop className="!size-5" />
                                 <span className="text-base font-semibold">
                                     Event Registration System

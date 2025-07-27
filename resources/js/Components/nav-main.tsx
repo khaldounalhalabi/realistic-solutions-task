@@ -1,5 +1,3 @@
-import { IconCirclePlusFilled } from "@tabler/icons-react";
-
 import {
     SidebarGroup,
     SidebarGroupContent,
@@ -8,6 +6,7 @@ import {
     SidebarMenuItem,
 } from "@/Components/ui/shadcn/sidebar";
 import { SidebarItem } from "@/Components/ui/Sidebar";
+import { Link } from "@inertiajs/react";
 
 export function NavMain({ items }: { items: SidebarItem[] }) {
     return (
@@ -15,17 +14,22 @@ export function NavMain({ items }: { items: SidebarItem[] }) {
             <SidebarGroupContent className="flex flex-col gap-2">
                 <SidebarMenu>
                     {items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton tooltip={item.title}>
-                                {item.icon &&
-                                    (typeof item.icon == "function" ? (
-                                        <item.icon />
-                                    ) : (
-                                        item.icon
-                                    ))}
-                                <span>{item.title}</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
+                        <Link href={item.href}>
+                            <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton
+                                    tooltip={item.title}
+                                    className={"cursor-pointer"}
+                                >
+                                    {item.icon &&
+                                        (typeof item.icon == "function" ? (
+                                            <item.icon />
+                                        ) : (
+                                            item.icon
+                                        ))}
+                                    <span>{item.title}</span>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </Link>
                     ))}
                 </SidebarMenu>
             </SidebarGroupContent>

@@ -1,37 +1,40 @@
-import { ReactNode } from "react";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/Components/ui/shadcn/card";
+import React, { ReactNode } from "react";
 
-const PageCard = ({
-    children,
-    title,
-    actions,
-}: {
-    children?: ReactNode;
+interface PageCardProps {
     title?: string;
-    actions?: ReactNode;
+    description?: string;
+    children?: ReactNode;
+    actions?: ReactNode | (() => ReactNode);
+}
+
+const PageCard: React.FC<PageCardProps> = ({
+    title,
+    description,
+    children,
+    actions = undefined,
 }) => {
     return (
-        <div
-            className={
-                "bg-white-secondary dark:bg-dark-secondary w-full rounded-md p-8"
-            }
-            style={{
-                boxShadow: "0 35px 60px 15px rgba(0, 0, 0, 0.2)",
-            }}
-        >
-            {title || actions ? (
-                <div
-                    className={`dark:bg-dark mb-5 flex w-full items-center justify-between rounded-md bg-white p-4 shadow-md`}
-                >
-                    <h2 className="text-xl font-bold dark:text-white">
-                        {title}
-                    </h2>
-                    <div>{actions ? actions : ""}</div>
-                </div>
-            ) : (
-                ""
-            )}
-            {children}
-        </div>
+        <Card className={"mx-5"}>
+            <CardHeader>
+                {title && <CardTitle className={"text-xl"}>{title}</CardTitle>}
+                {description && (
+                    <CardDescription>{description}</CardDescription>
+                )}
+                {actions && (
+                    <div className={"flex justify-end items-center"}>
+                        {typeof actions == "function" ? actions() : actions}
+                    </div>
+                )}
+            </CardHeader>
+            <CardContent>{children}</CardContent>
+        </Card>
     );
 };
 

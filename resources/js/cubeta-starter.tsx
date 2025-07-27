@@ -1,11 +1,34 @@
+import AuthLayout from "@/Components/Layouts/AuthLayout";
 import Layout from "@/Components/Layouts/Layout";
 import { createInertiaApp } from "@inertiajs/react";
-import { Suspense } from "react";
+import { ReactElement, ReactNode, ReactPortal, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "../css/cubeta-starter.css";
 import "./bootstrap";
 
 const appName = import.meta.env.APP_NAME || "Laravel";
+
+type PageType =
+    | string
+    | number
+    | bigint
+    | boolean
+    | ReactElement
+    | Iterable<ReactNode>
+    | ReactPortal
+    | Promise<
+          | string
+          | number
+          | bigint
+          | boolean
+          | ReactPortal
+          | ReactElement
+          | Iterable<ReactNode>
+          | null
+          | undefined
+      >
+    | null
+    | undefined;
 
 const authPages = [
     "Login",
@@ -28,8 +51,8 @@ createInertiaApp({
             page.layout ||
             (!authPages.includes(page.name ?? "undefined")
                 ? // @ts-ignore
-                  (page) => <Layout children={page} />
-                : null);
+                  (page: PageType) => <Layout children={page} />
+                : (page: PageType) => <AuthLayout children={page} />);
 
         return page;
     },
@@ -46,14 +69,3 @@ createInertiaApp({
         color: "#4B5563",
     },
 });
-
-const dark =
-    "dark" == window.localStorage.getItem("theme_mode") ? "dark" : "light";
-const htmlTag = document.querySelector("html");
-if (dark) {
-    htmlTag?.classList.add("dark");
-    htmlTag?.classList.remove("light");
-} else {
-    htmlTag?.classList.add("light");
-    htmlTag?.classList.remove("dark");
-}

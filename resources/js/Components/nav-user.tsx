@@ -1,4 +1,4 @@
-import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
+import { IconDotsVertical, IconLogout, IconUser } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback } from "@/Components/ui/shadcn/avatar";
 import {
@@ -16,6 +16,7 @@ import {
     useSidebar,
 } from "@/Components/ui/shadcn/sidebar";
 import User from "@/Models/User";
+import { Link } from "@inertiajs/react";
 
 export function NavUser({ user }: { user: User }) {
     const { isMobile } = useSidebar();
@@ -31,12 +32,14 @@ export function NavUser({ user }: { user: User }) {
                         >
                             <Avatar className="h-8 w-8 rounded-lg grayscale">
                                 <AvatarFallback className="rounded-lg">
-                                    {user.name?.charAt(0)}
+                                    {user.first_name?.charAt(0) +
+                                        " " +
+                                        user?.last_name?.charAt(1)}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {user.name}
+                                    {user.first_name + " " + user?.last_name}
                                 </span>
                                 <span className="text-muted-foreground truncate text-xs">
                                     {user.email}
@@ -55,12 +58,16 @@ export function NavUser({ user }: { user: User }) {
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
                                     <AvatarFallback className="rounded-lg">
-                                        {user?.name?.charAt(0)}
+                                        {user.first_name?.charAt(0) +
+                                            " " +
+                                            user?.last_name?.charAt(1)}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        {user.name}
+                                        {user.first_name +
+                                            " " +
+                                            user?.last_name}
                                     </span>
                                     <span className="text-muted-foreground truncate text-xs">
                                         {user.email}
@@ -69,10 +76,18 @@ export function NavUser({ user }: { user: User }) {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <IconLogout />
-                            Log out
-                        </DropdownMenuItem>
+                        <Link href={route("v1.web.protected.me")}>
+                            <DropdownMenuItem>
+                                <IconUser />
+                                Profile
+                            </DropdownMenuItem>
+                        </Link>
+                        <Link href={route("v1.web.protected.logout")}>
+                            <DropdownMenuItem>
+                                <IconLogout />
+                                Log out
+                            </DropdownMenuItem>
+                        </Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

@@ -1,43 +1,49 @@
-import ChevronLeft from "@/Components/Icons/ChevronLeft";
-import Button from "@/Components/ui/Button";
+import LoadingSpinner from "@/Components/Icons/LoadingSpinner";
+import { Button } from "@/Components/ui/shadcn/button";
+import { ChevronLeft } from "lucide-react";
 import { FormEvent, ReactNode } from "react";
 
 const Form = ({
     onSubmit,
     processing,
     children,
-    buttonText = "Save",
+    buttonText,
     backButton = true,
+    className,
 }: {
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
     processing?: boolean;
     children?: ReactNode;
     buttonText?: string;
     backButton?: boolean;
+    className?: string;
 }) => {
+    if (!buttonText) {
+        buttonText = "Save";
+    }
+
     return (
-        <form onSubmit={onSubmit}>
+        <form className={className} onSubmit={onSubmit}>
             {children}
             <div
-                className={`flex items-center ${backButton ? "justify-between" : "justify-end"} my-2 w-full`}
+                className={`flex items-center ${backButton ? "justify-between" : "justify-end"} mt-5 w-full`}
             >
-                {backButton ? (
+                {backButton && (
                     <Button
                         type="button"
-                        color="secondary"
+                        variant="outline"
                         onClick={(e) => {
                             e.preventDefault();
                             window.history.back();
                         }}
+                        className={"flex items-center"}
                     >
-                        <ChevronLeft />
-                        Back
+                        <ChevronLeft /> Back
                     </Button>
-                ) : (
-                    ""
                 )}
-                <Button type="submit" disabled={processing}>
+                <Button type="submit" disabled={processing} variant={"default"}>
                     {buttonText}
+                    {processing && <LoadingSpinner />}
                 </Button>
             </div>
         </form>
