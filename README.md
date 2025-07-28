@@ -1,55 +1,41 @@
-مرحبًا 👋
+# Laravel Developer Position Technical Test
 
-نشكرك على اهتمامك بالتقديم لوظيفة مبرمج Laravel + Blade.
-نرجو تنفيذ المهمة التالية خلال 3 أيام كحد أقصى (ما يعادل 24 ساعة عمل تقريبًا):
+Hello there, I am Khaldoun Alhalabi
 
-🧩 فكرة المشروع: نظام تسجيل فعالية (Event Registration System)
+## requirements:
 
-المتطلبات:
+php 8.2 , composer , sqlite or mysql
 
-1️⃣ واجهة التسجيل العامة (للحضور):
+## How to set up the project
 
-    نموذج تسجيل بسيط (الاسم، البريد، رقم الجوال).
+1. install dependencies via :
+    ```bash
+   composer install
+   ```
+2. copy .env.example to .env file
+    ```bash 
+   cp .env.example .env
+    ```
 
-    عند التسجيل يتم إرسال كود QR مميز إلى البريد الإلكتروني.
+3. configure your database connection within the .env file (by default, it is **sqlite**, and it can do the job)
+4. replace the default mail server config in the .env file with yours, so you can try the reset password functionality and
+   the QR code email functionality
 
-    تظهر للمستخدم رسالة تأكيد بعد التسجيل.
+5. generate encryption key:
+    ```bash
+   php artisan key:generate
+    ```
+6. run the project migrations and seeders
+    ```bash
+   php artisan migrate:fresh --seed
+   ```
+7. run
+    ```bash
+   npm run dev
+   ```
+8. for registration page open your browser on `http://localhost/realistic-solutions-task/public` if you are using xampp
+   or `http://localhost:8000` if you are using `php artisan serve` command to run the project
+9. for the admin dashboard use the path `/public/v1/dashboard` and use `admin@email.com` as an email and `123456789` as
+   a password
 
-2️⃣ لوحة المسؤول (Admin Panel):
-
-    عرض قائمة المسجلين.
-
-    إمكانية البحث والتصفية.
-
-    إمكانية تأكيد الحضور عبر مسح QR (تُحاكى يدويًا).
-
-    إنشاء تقارير الحضور (PDF أو Excel).
-
-    عدد المسجلين / عدد الحاضرين.
-
-3️⃣ نظام QR Code:
-
-    عند التسجيل يتم إنشاء QR Code فريد لكل مستخدم.
-
-    يُرسل إلى البريد الإلكتروني (أو يظهر على الشاشة كخيار إضافي).
-
-📌 المطلوب تسليمه:
-
-    كود المشروع الكامل (Laravel + Blade).
-
-    ملف توثيق الـ API (إن وُجد).
-
-    ERD لتصميم قاعدة البيانات.
-
-    دليل تشغيل المشروع (README).
-
-    يفضل: رفع المشروع أونلاين (إن أمكن).
-
-💡 ملاحظات تقنية:
-
-    استخدم Laravel 10 أو الأحدث.
-
-    واجهات Blade باستخدام Bootstrap أو Tailwind.
-
-    لإنشاء QR Code يمكنك استخدام مكتبة:
-    simple-qrcode
+Thanks for your time.
