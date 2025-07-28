@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AcceptedLanguagesMiddleware;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -10,17 +9,18 @@ use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
 
-            Route::middleware(['web',
-                'locale',
-            ])
+            Route::middleware(['web',])
+                ->name('v1.web.public.')
                 ->group(base_path('routes\v1\web\public.php'));
 
-            Route::middleware(['web', 'locale', 'authenticated:web'])
+            Route::middleware(['web', 'authenticated:web'])
+                ->prefix('/v1/')
+                ->name('v1.web.protected.')
                 ->group(base_path('routes\v1\web\protected.php'));
 
         }
@@ -29,7 +29,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'authenticated' => Authenticate::class,
-            'locale' => AcceptedLanguagesMiddleware::class,
         ]);
         $middleware->web(append: [
             HandleInertiaRequests::class,

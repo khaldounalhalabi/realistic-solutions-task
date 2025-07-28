@@ -1,13 +1,23 @@
 <?php
 
 use App\Http\Controllers\WEB\v1;
+use App\Http\Controllers\WEB\v1\AttendeeController;
+use App\Http\Controllers\WEB\v1\EventController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/v1/dashboard/login', [v1\BaseAuthController::class, 'login'])->name('v1.web.public.login');
-Route::post('/v1/dashboard/register', [v1\BaseAuthController::class, 'register'])->name('v1.web.public.register');
-Route::post('/v1/dashboard/request-reset-password', [v1\BaseAuthController::class, 'requestResetPassword'])->name('v1.web.public.request.reset.password');
-Route::post('/v1/dashboard/reset-password', [v1\BaseAuthController::class, 'resetPassword'])->name('v1.web.public.reset.password');
-Route::post('/v1/dashboard/validate-reset-password-code', [v1\BaseAuthController::class, 'validateResetPasswordCode'])->name('v1.web.public.validate.reset.password.code');
-Route::inertia('/v1/dashboard/login', 'login')->name('v1.web.public.login.page');
-Route::inertia('/v1/dashboard/request-reset-password', 'forget-password')->name('v1.web.public.request.reset.password.page');
-Route::inertia('/v1/dashboard/reset-password', 'reset-password')->name('v1.web.public.reset.password.page');
+Route::prefix('/v1/dashboard')
+    ->group(function () {
+        Route::post('/login', [v1\BaseAuthController::class, 'login'])->name('login');
+        Route::post('/register', [v1\BaseAuthController::class, 'register'])->name('register');
+        Route::post('/request-reset-password', [v1\BaseAuthController::class, 'requestResetPassword'])->name('request.reset.password');
+        Route::post('/reset-password', [v1\BaseAuthController::class, 'resetPassword'])->name('reset.password');
+        Route::post('/validate-reset-password-code', [v1\BaseAuthController::class, 'validateResetPasswordCode'])->name('validate.reset.password.code');
+        Route::inertia('/login', 'login')->name('login.page');
+        Route::inertia('/request-reset-password', 'forget-password')->name('request.reset.password.page');
+        Route::inertia('/reset-password', 'reset-password')->name('reset.password.page');
+    });
+
+
+Route::post("/v1/events/register", [AttendeeController::class, 'register'])->name('attendees.register');
+Route::get("/v1/active-events" , [EventController::class, 'activeEvents'])->name('active.events');
+Route::inertia('/', 'homepage');

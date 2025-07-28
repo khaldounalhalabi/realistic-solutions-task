@@ -38,6 +38,8 @@ const authPages = [
     "Register",
 ];
 
+const notDashboardPages = ["Homepage"];
+
 createInertiaApp({
     title: (title: any) => `${title} - ${appName}`,
     resolve: async (name: any) => {
@@ -49,10 +51,13 @@ createInertiaApp({
         // Assign layout conditionally
         page.layout =
             page.layout ||
-            (!authPages.includes(page.name ?? "undefined")
+            (!authPages.includes(page.name ?? "undefined") &&
+            !notDashboardPages.includes(page.name ?? "undefined")
                 ? // @ts-ignore
                   (page: PageType) => <Layout children={page} />
-                : (page: PageType) => <AuthLayout children={page} />);
+                : authPages.includes(page.name ?? "undefined")
+                  ? (page: PageType) => <AuthLayout children={page} />
+                  : undefined);
 
         return page;
     },

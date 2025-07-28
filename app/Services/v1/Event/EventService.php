@@ -17,4 +17,9 @@ class EventService extends BaseService
     use Makable;
 
     protected string $repositoryClass = EventRepository::class;
+
+    public function activeEvents(array $relations = [])
+    {
+        return $this->repository->activeEvents($relations);
+    }
 }

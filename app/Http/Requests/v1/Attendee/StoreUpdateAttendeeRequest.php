@@ -23,7 +23,7 @@ class StoreUpdateAttendeeRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255', 'min:3'],
             'email' => ['required', 'string', 'max:255', 'email', 'min:6'],
-            'checked_in_at' => ['nullable', 'date', 'date_format:Y-m-d H:i'],
+            'checked_in_at' => ['nullable', 'date', 'date_format:Y-m-d H:i', Rule::excludeIf(fn() => !auth()->user())],
             'event_id' => ['numeric', 'required', Rule::exists('events', 'id')],
         ];
     }

@@ -106,8 +106,8 @@ class EventController extends WebController
         return rest()
             ->when(
                 $result,
-                fn ($rest) => $rest->ok()->deleteSuccess(),
-                fn ($rest) => $rest->noData(),
+                fn($rest) => $rest->ok()->deleteSuccess(),
+                fn($rest) => $rest->noData(),
             )->send();
     }
 
@@ -155,5 +155,16 @@ class EventController extends WebController
                 ->back()
                 ->with('message', trans('site.something_went_wrong'));
         }
+    }
+
+    public function activeEvents()
+    {
+        $items = $this->eventService->activeEvents($this->relations);
+
+        return rest()
+            ->ok()
+            ->getSuccess()
+            ->data($items)
+            ->send();
     }
 }

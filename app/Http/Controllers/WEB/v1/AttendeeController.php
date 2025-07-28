@@ -169,4 +169,15 @@ class AttendeeController extends WebController
                 ->with('error', trans('site.there_is_no_data'));
         }
     }
+
+    public function register(StoreUpdateAttendeeRequest $request)
+    {
+        $attendee = $this->attendeeService->store($request->validated(), $this->relations);
+
+        if ($attendee) {
+            return redirect()->back()->with('success', trans('site.success'));
+        }
+
+        return redirect()->back()->with('error', trans('site.something_went_wrong'));
+    }
 }
