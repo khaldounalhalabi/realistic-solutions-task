@@ -38,4 +38,5 @@ php 8.2 , composer , sqlite or mysql
 9. for the admin dashboard use the path `/public/v1/dashboard` and use `admin@email.com` as an email and `123456789` as
    a password
 
+10. Finally, the ERD image included in project root named: `database.png`
 Thanks for your time.
