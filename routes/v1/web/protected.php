@@ -8,7 +8,7 @@ Route::prefix('/dashboard')
         Route::get('/me', [v1\BaseAuthController::class, 'userDetails'])->name('me');
         Route::put('/me', [v1\BaseAuthController::class, 'updateUserDetails'])->name('me.update');
         Route::get('/logout', [v1\BaseAuthController::class, 'logout'])->name('logout');
-        Route::inertia('', 'index')->name('index');
+        Route::inertia('/', 'index')->name('index');
     });
 
 Route::post('/events/export', [v1\EventController::class, 'export'])->name('events.export');
