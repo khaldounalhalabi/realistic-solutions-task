@@ -9,7 +9,7 @@
 
     <!-- Scripts -->
     @viteReactRefresh
-    @vite(["resources/js/cubeta-starter.tsx"])
+    @vite(["resources/js/app.tsx"])
     @inertiaHead
     @routes
     <link rel="preconnect" href="https://fonts.googleapis.com"/>

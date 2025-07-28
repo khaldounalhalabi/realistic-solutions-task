@@ -3,7 +3,7 @@ import Layout from "@/Components/Layouts/Layout";
 import { createInertiaApp } from "@inertiajs/react";
 import { ReactElement, ReactNode, ReactPortal, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import "../css/cubeta-starter.css";
+import "../css/app.css";
 import "./bootstrap";
 
 const appName = import.meta.env.APP_NAME || "Laravel";
