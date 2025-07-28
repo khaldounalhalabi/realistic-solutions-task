@@ -6,8 +6,7 @@ import { Sidebar } from "@/Components/ui/Sidebar";
 import { MiddlewareProps } from "@/Types";
 import { usePage } from "@inertiajs/react";
 import React from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "sonner";
 
 const Layout = ({ children }: { children?: React.ReactNode }) => {
     if (usePage<MiddlewareProps>().props.message) {
