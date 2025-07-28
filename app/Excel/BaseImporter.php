@@ -38,6 +38,7 @@ class BaseImporter implements ToModel, WithHeadingRow
             foreach ($this->mapping() as $col) {
                 $import[$col] = $this->processRow($col, $row[$col]);
             }
+
             $modelClass = get_class($this->model);
             return new $modelClass($import);
         }
@@ -46,7 +47,7 @@ class BaseImporter implements ToModel, WithHeadingRow
 
     /**
      * @param string $colName
-     * @param $row
+     * @param        $row
      * @return mixed
      */
     private function processRow(string $colName, $row): mixed

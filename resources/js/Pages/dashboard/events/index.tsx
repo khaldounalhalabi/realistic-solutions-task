@@ -1,5 +1,6 @@
 import ActionsButtons from "@/Components/Datatable/ActionsButtons";
 import DataTable from "@/Components/Datatable/DataTable";
+import Input from "@/Components/Form/Fields/Input";
 import Event from "@/Models/Event";
 import Http from "@/Modules/Http/Http";
 
@@ -56,6 +57,35 @@ const Index = ({ exportables }: { exportables: string[] }) => {
                     ),
                 },
             ]}
+            filter={(params, setParams) => (
+                <>
+                    <Input
+                        label={"Start time"}
+                        name={"start_time"}
+                        type={"date"}
+                        onChange={(e) => {
+                            setParams((prev) => ({
+                                ...prev,
+                                start_time: e.target?.value,
+                            }));
+                        }}
+                        defaultValue={params.start_time}
+                    />
+
+                    <Input
+                        label={"End time"}
+                        name={"end_time"}
+                        type={"date"}
+                        onChange={(e) => {
+                            setParams((prev) => ({
+                                ...prev,
+                                end_time: e.target?.value,
+                            }));
+                        }}
+                        defaultValue={params.end_time}
+                    />
+                </>
+            )}
         />
     );
 };

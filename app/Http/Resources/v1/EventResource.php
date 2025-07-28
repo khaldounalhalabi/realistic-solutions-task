@@ -11,7 +11,6 @@ class EventResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
-     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -22,6 +21,7 @@ class EventResource extends BaseResource
             'start_time' => $this->start_time?->format('Y-m-d H:i'),
             'end_time' => $this->end_time?->format('Y-m-d H:i'),
             'description' => $this->description,
+            'attendees' => AttendeeResource::collection($this->whenLoaded('attendees')),
         ];
     }
 }

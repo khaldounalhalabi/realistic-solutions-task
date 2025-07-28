@@ -41,7 +41,7 @@ abstract class BaseRepository
         $this->tableName = $this->model->getTable();
 
         if (method_exists($this->model, 'searchableArray')) {
-            $this->searchableKeys = $this->model::searchableArray();
+            $this->searchableKeys = $this->modelClass::searchableArray();
         }
 
         if (method_exists($this->model, 'relationsSearchableArray')) {
@@ -68,7 +68,7 @@ abstract class BaseRepository
 
     public function getTableColumns(): array
     {
-        return $this->model->getFillable();
+        return [...$this->model->getFillable(), 'id'];
     }
 
     /**
@@ -216,6 +216,11 @@ abstract class BaseRepository
         return $this->globalQuery($relationships)->paginate($perPage);
     }
 
+    /**
+     * @param array $data
+     * @param array $relationships
+     * @return MODEL
+     */
     public function create(array $data, array $relationships = []): Model
     {
         $result = $this->model->create($data);
@@ -235,6 +240,11 @@ abstract class BaseRepository
         return $result?->delete();
     }
 
+    /**
+     * @param       $id
+     * @param array $relationships
+     * @return MODEL|null
+     */
     public function find($id, array $relationships = []): ?Model
     {
         $result = $this->model->with($relationships)->find($id);
@@ -327,7 +337,7 @@ abstract class BaseRepository
 
     protected function unsetEmptyParams(string|array|null $param = null): string|array|null
     {
-        if (!$param) {
+        if (is_null($param)) {
             return null;
         }
         if (is_array($param)) {

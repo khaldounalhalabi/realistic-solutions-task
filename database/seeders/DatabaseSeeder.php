@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            \Database\Seeders\EventSeeder::class,
+            EventSeeder::class,
+            AttendeeSeeder::class,
         ]);
     }
 }

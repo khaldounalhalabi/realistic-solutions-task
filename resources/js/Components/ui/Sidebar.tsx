@@ -13,7 +13,7 @@ import {
 import useUser from "@/Hooks/use-user";
 import { Link } from "@inertiajs/react";
 import { IconInnerShadowTop } from "@tabler/icons-react";
-import { SparkleIcon } from "lucide-react";
+import { PartyPopperIcon, SparkleIcon } from "lucide-react";
 import React, { ReactNode } from "react";
 
 export interface SidebarItem {
@@ -22,7 +22,7 @@ export interface SidebarItem {
     icon?: ReactNode | (() => ReactNode);
 }
 
-const sidebarItems = [
+const sidebarItems: SidebarItem[] = [
     {
         href: route("v1.web.protected.index"),
         title: "Dashboard",
@@ -32,6 +32,11 @@ const sidebarItems = [
         title: "Events",
         href: route("v1.web.protected.events.index"),
         icon: () => <SparkleIcon />,
+    },
+    {
+        title: "Attendees",
+        href: route("v1.web.protected.attendees.index"),
+        icon: () => <PartyPopperIcon />,
     },
 ];
 export const Sidebar = ({

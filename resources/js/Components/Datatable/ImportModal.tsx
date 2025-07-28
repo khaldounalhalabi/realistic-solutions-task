@@ -5,7 +5,7 @@ import Modal from "@/Components/ui/Modal";
 import { Button } from "@/Components/ui/shadcn/button";
 import DownloadFile from "@/Hooks/use-download";
 import { useForm } from "@inertiajs/react";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 
 const ImportModal = ({
     revalidate,
@@ -17,15 +17,13 @@ const ImportModal = ({
     importExampleRoute?: string;
 }) => {
     const [openImport, setOpenImport] = useState(false);
-
     const { post, setData, processing } = useForm<{
         excel_file?: File;
     }>();
 
     const { isLoading, downloadFile } = DownloadFile();
 
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = () => {
         post(importRoute, {
             onSuccess: () => {
                 if (!processing && !isLoading) {
@@ -65,7 +63,7 @@ const ImportModal = ({
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" disabled={processing}>
+                    <Button onClick={onSubmit} disabled={processing}>
                         Import
                         {processing && <LoadingSpinner />}
                     </Button>
@@ -90,7 +88,7 @@ const ImportModal = ({
             }
             title={"Import from excel file"}
         >
-            <form onSubmit={onSubmit}>
+            <form>
                 <label className={"dark:text-white"}>
                     Excel file
                     <Input

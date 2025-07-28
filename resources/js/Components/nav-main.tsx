@@ -9,6 +9,7 @@ import { SidebarItem } from "@/Components/ui/Sidebar";
 import { Link } from "@inertiajs/react";
 
 export function NavMain({ items }: { items: SidebarItem[] }) {
+    const url = window.location.href;
     return (
         <SidebarGroup>
             <SidebarGroupContent className="flex flex-col gap-2">
@@ -19,6 +20,12 @@ export function NavMain({ items }: { items: SidebarItem[] }) {
                                 <SidebarMenuButton
                                     tooltip={item.title}
                                     className={"cursor-pointer"}
+                                    isActive={
+                                        url !=
+                                            route("v1.web.protected.index") &&
+                                        (item.href.startsWith(url) ||
+                                            item.href == url)
+                                    }
                                 >
                                     {item.icon &&
                                         (typeof item.icon == "function" ? (

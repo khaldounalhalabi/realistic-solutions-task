@@ -29,7 +29,7 @@ const Radio: React.FC<IRadioProps> = ({
     return (
         <Label
             htmlFor={`${name}_${label}_id`}
-            className={"flex flex-col items-start justify-between"}
+            className={"flex flex-col items-start justify-between py-5"}
         >
             {label ?? ""}
             <RadioGroup

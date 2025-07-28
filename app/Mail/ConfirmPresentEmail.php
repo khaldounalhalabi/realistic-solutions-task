@@ -2,25 +2,22 @@
 
 namespace App\Mail;
 
+use App\Models\Attendee;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ResetPasswordCodeEmail extends Mailable
+class ConfirmPresentEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $code;
-
-    public string $email;
-
-    public function __construct(string $code, string $email)
+    /**
+     * Create a new message instance.
+     */
+    public function __construct(private Attendee $attendee)
     {
-        $this->code = $code;
-        $this->email = $email;
     }
 
     /**
@@ -29,8 +26,7 @@ class ResetPasswordCodeEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: $this->email,
-            subject: 'Reset password',
+            subject: 'Present Confirmation Email',
         );
     }
 
@@ -40,17 +36,16 @@ class ResetPasswordCodeEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.reset-password-email',
+            view: 'mail.confirm-present-email',
             with: [
-                'code' => $this->code,
+                'attendee' => $this->attendee->load('event')
             ]
         );
     }
 
     /**
      * Get the attachments for the message.
-     *
-     * @return array<int, Attachment>
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
